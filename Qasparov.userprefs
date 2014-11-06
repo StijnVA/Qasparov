@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="QBisServer/Program.cs">
+    <Files>
+      <File FileName="QBisServer/Program.cs" Line="18" Column="4" />
+      <File FileName="QBisClient/Program.cs" Line="16" Column="1" />
+      <File FileName="QBisSDK/QBisConnection.cs" Line="12" Column="40" />
+      <File FileName="QBisSDK/Server.cs" Line="24" Column="21" />
+      <File FileName="QBisServer/StartupArguments.cs" Line="10" Column="39" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

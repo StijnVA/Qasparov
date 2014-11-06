@@ -1,12 +1,21 @@
 using System;
+using SDK = org.qasparov.qbis.SDK;
 
-namespace QBisServer
+namespace org.qasparov.qbis.server
 {
-	class MainClass
+	/// <summary>
+	/// Servise host is the application to hast the services of the QBis System. This application is intended to 
+	/// </summary>
+	class ServiseHost
 	{
 		public static void Main (string[] args)
 		{
-			Console.WriteLine ("Hello World!");
-		}
+			var arguments = StartupArguments.Parse (args);
+			var server = new SDK.Server (
+				arguments.Host,
+				arguments.Port
+			);
+
+
 	}
 }

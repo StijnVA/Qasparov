@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{00354C48-6386-42FF-AC78-37CC38ADF52B}</ProjectGuid>
+    <ProjectGuid>{66DAE793-1357-40DC-B0B8-4998C8D32CF8}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>QBisServer</RootNamespace>
-    <AssemblyName>QBisServer</AssemblyName>
+    <RootNamespace>QBisSDK</RootNamespace>
+    <AssemblyName>QBisSDK</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,15 +34,12 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartupArguments.cs" />
+    <Compile Include="QBisConnection.cs" />
+    <Compile Include="Server.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\QBisSDK\QBisSDK.csproj">
-      <Project>{66DAE793-1357-40DC-B0B8-4998C8D32CF8}</Project>
-      <Name>QBisSDK</Name>
-    </ProjectReference>
+    <Folder Include="security\" />
   </ItemGroup>
 </Project>

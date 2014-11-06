@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QBisServer", "QBisServer\QBisServer.csproj", "{00354C48-6386-42FF-AC78-37CC38ADF52B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QBisClient", "QBisClient\QBisClient.csproj", "{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QBisSDK", "QBisSDK\QBisSDK.csproj", "{66DAE793-1357-40DC-B0B8-4998C8D32CF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,6 +17,14 @@ Global
 		{00354C48-6386-42FF-AC78-37CC38ADF52B}.Debug|x86.Build.0 = Debug|x86
 		{00354C48-6386-42FF-AC78-37CC38ADF52B}.Release|x86.ActiveCfg = Release|x86
 		{00354C48-6386-42FF-AC78-37CC38ADF52B}.Release|x86.Build.0 = Release|x86
+		{66DAE793-1357-40DC-B0B8-4998C8D32CF8}.Debug|x86.ActiveCfg = Debug|x86
+		{66DAE793-1357-40DC-B0B8-4998C8D32CF8}.Debug|x86.Build.0 = Debug|x86
+		{66DAE793-1357-40DC-B0B8-4998C8D32CF8}.Release|x86.ActiveCfg = Release|x86
+		{66DAE793-1357-40DC-B0B8-4998C8D32CF8}.Release|x86.Build.0 = Release|x86
+		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Debug|x86.ActiveCfg = Debug|x86
+		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Debug|x86.Build.0 = Debug|x86
+		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Release|x86.ActiveCfg = Release|x86
+		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = QBisServer\QBisServer.csproj
