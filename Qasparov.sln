@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QBisClient", "QBisClient\QB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QBisSDK", "QBisSDK\QBisSDK.csproj", "{66DAE793-1357-40DC-B0B8-4998C8D32CF8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{0983CA8D-23ED-4B02-8FEB-2675E3B92663}"
+	ProjectSection(SolutionItems) = preProject
+		libs\Qbus.Communication.dll = libs\Qbus.Communication.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -25,6 +30,8 @@ Global
 		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Debug|x86.Build.0 = Debug|x86
 		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Release|x86.ActiveCfg = Release|x86
 		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = QBisServer\QBisServer.csproj
