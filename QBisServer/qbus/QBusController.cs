@@ -11,6 +11,7 @@ namespace org.qasparov.qbis.server.qbus
 	public class QBusController
 	{
 		public enum ControllerStates {
+			CHANGING_STATE,
 			CONNECTING,
 			CONNECTED,
 			DISCONNECTING,
@@ -35,14 +36,21 @@ namespace org.qasparov.qbis.server.qbus
 
 		private ControllerStates _state;
 		public ControllerStates State { get {
+				if (this._state == ControllerStates.CHANGING_STATE) {
+					throw new ApplicationException ("You should not care about the state when changing state.");
+				}
 			return this._state;
 			} 
 			internal set {
-				//TODO Trigger onStateChangedEvent
+				var oldstate = this._state;
+				this._state = ControllerStates.CHANGING_STATE;
+				OnStateChange (this, oldstate, value); 
 				this._state = value;
 			} 
 		}
 
+		public delegate void StateChangedEvent(QBusController sender, StateChangedEvent from, StateChangedEvent to);
+		public StateChangedEvent OnStateChange;
 
 
 		public QBusController (String Address, String Port, String UserName, String UserPassword)
@@ -82,12 +90,16 @@ namespace org.qasparov.qbis.server.qbus
 			Qbus.Communication.ConnectionManager.Instance.Connect (this.qBusController);
 		}
 
+		public void ProcessAction (org.qasparov.qbis.SDK.QBisAction action)
+		{
+			lock (this) {
+				//TODO: Process the action.
+			}
+		}
+
 		void HandleOnError (object sender, Qbus.Communication.ConnectionManager.ErrorEventArgs args)
 		{
-			Logger.Log ("In HandleOnError!");
-			//Logger.Log (sender, Logger.LogLevels.VERBOSE);
-			//Logger.Log (args, Logger.LogLevels.VERBOSE);
-
+			Logger.Log (String.Format("{0}({1})", args.Exception.Message, args.Exception.Source), Logger.LogLevels.WARNING); 
 		}
 
 		void HandleConnectionChanged (Qbus.Communication.ControllerCommunication cc)
@@ -99,8 +111,19 @@ namespace org.qasparov.qbis.server.qbus
 				Logger.Log ("   Hostname       : " + cc.Controller.HostName);
 				Logger.Log ("   TcpPort        : " + cc.Controller.TcpPort);
 				Logger.Log ("   TcpComm Status : " + tc.Status);
-			}
 			
+				switch (tc.Status) {
+				case TCP_STATUS.CONNECTED:
+					this.State = ControllerStates.CONNECTED;
+					break;
+				case TCP_STATUS.DISCONNECTED:
+					this.State = ControllerStates.DISCONNECTED;
+					break;
+				default:
+					break;
+				}
+
+			}
 		}
 
 		void HandleCommandReceived (object sender, Qbus.Communication.CommandEventArgs e)

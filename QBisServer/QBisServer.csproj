@@ -46,6 +46,7 @@
     <Compile Include="logging\Logger.cs" />
     <Compile Include="host\QBisHost.cs" />
     <Compile Include="host\QBisClient.cs" />
+    <Compile Include="host\MessageDispatcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

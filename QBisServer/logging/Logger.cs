@@ -69,7 +69,7 @@ namespace org.qasparov.qbis.server.logging
 		}
 
 		public Logger Write(LogLevels level = LogLevels.VERBOSE, String message = ""){
-			Console.WriteLine (String.Format ("({2,3}){0,10}:{1}",
+			Console.WriteLine (String.Format ("({2,3}){0,10} :{1}",
 			                                  level.ToString (),
 			                                  message,
 			                                  Thread.CurrentThread.ManagedThreadId));	
