@@ -28,13 +28,15 @@ namespace org.qasparov.qbis.server
 			//openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365
 			//openssl pkcs12 -export -out selfSigned.pfx - inkey key.pem -in cert.pem
 
+			host.OnNewClientConnected += (sender, client) => {
+				Console.WriteLine(String.Format ("New client {0} connected", client.FriendlyName));
+			};
 
 			host.StartListening ("selfSigned.pfx", "mypass");
 
 			Console.ReadLine ();
 
 			host.DisconnectFromQBus ();
-
 
 		}
 	}

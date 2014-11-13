@@ -5,32 +5,59 @@ using System.IO;
 using org.qasparov.qbis.server.logging;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Authentication;
+using System.Text;
 
 namespace org.qasparov.qbis.server.host
 {
 	public class QBisClient
 	{
+		public const String ANONYMOUS = "ANONYMOUS"; 
+
 		private TcpClient tcpclient;
 		private X509Certificate2 x509certificate;
+		private StreamWriter writer;
+		private X509Certificate2 x509clientCertificate;
 
 		public QBisClient (TcpClient tcpclient, X509Certificate2 x509certificate)
 		{
 			this.tcpclient = tcpclient;
 			this.x509certificate = x509certificate;
 		}
+			
+		public X509Certificate2 ClientCertificate{
+			get {
+				return this.x509clientCertificate;
+			}
+		}
+
+		public String FriendlyName {
+			get { 
+				if (this.x509clientCertificate == null) {
+					return ANONYMOUS;
+				} else {
+					return this.x509clientCertificate.FriendlyName;
+				}
+			}
+		}
 
 		public void StartProcessing(){
 			SslStream sslStream = new SslStream (tcpclient.GetStream (), false);
 			try 
 			{			
-				sslStream.AuthenticateAsServer(x509certificate, false, SslProtocols.Tls, true);
+				sslStream.AuthenticateAsServer(x509certificate, true, SslProtocols.Tls, true);
+				if(sslStream.RemoteCertificate!=null){
+					this.x509clientCertificate = new X509Certificate2(sslStream.RemoteCertificate);
+				}
 				var reader = new StreamReader(sslStream);
+				this.writer = new StreamWriter(sslStream);
 				Logger.Log("Ready to server!");
 				var line = reader.ReadLine();
 				while(line!= null && !line.Equals(SDK.QBisProtocolMessages.TERMINATE_SESSION)){
 					ProcessLine(line);
 					line = reader.ReadLine();
 				}
+			}catch(Exception ex){
+				Logger.Log (ex.Message, Logger.LogLevels.ERROR);
 			}
 			finally
 			{
@@ -41,12 +68,23 @@ namespace org.qasparov.qbis.server.host
 
 		protected void ProcessLine(String line){
 			Logger.Log(String.Format("Receive from client: {0}", line));
-			var msg = new SDK.QBisMessage { Desciption = line };
-			OnMessageReceived (msg);
+			var msg = new SDK.QBisInstruction { Desciption = line };
+			if (OnInstructionReceived != null) {
+				OnInstructionReceived (this, msg);
+			}
 		}
 
-		public delegate void OnMessageReceivedDelegate(SDK.QBisMessage message);
-		public OnMessageReceivedDelegate OnMessageReceived;
+		public void ProcessMessage (SDK.QBisMessage message)
+		{
+			if (writer != null) {
+				byte[] bytes = Encoding.UTF8.GetBytes(message.Desciption);
+				writer.WriteLine (message.Desciption);
+				writer.Flush ();
+			}
+		}
+
+		public delegate void InstructionReceivedDelegate(QBisClient sender, SDK.QBisInstruction instruction);
+		public InstructionReceivedDelegate OnInstructionReceived;
 
 	}
 }

@@ -33,24 +33,35 @@ namespace org.qasparov.qbis.server.qbus
 			get;
 			set;
 		}
+			
+
+		public delegate void StateChangedEvent(QBusController sender, ControllerStates from, ControllerStates to);
+		public delegate void CommandReceivedEvent(QBusController sender, SDK.QBisMessage qBisMessage);
+
+		public StateChangedEvent OnStateChange;
+		public CommandReceivedEvent OnCommandReceived;
+
+
 
 		private ControllerStates _state;
 		public ControllerStates State { get {
 				if (this._state == ControllerStates.CHANGING_STATE) {
 					throw new ApplicationException ("You should not care about the state when changing state.");
 				}
-			return this._state;
+				return this._state;
 			} 
 			internal set {
+				if (this._state == ControllerStates.CHANGING_STATE) {
+					throw new ApplicationException ("You should not care about the state when changing state.");
+				}
 				var oldstate = this._state;
 				this._state = ControllerStates.CHANGING_STATE;
-				OnStateChange (this, oldstate, value); 
+				if (OnStateChange != null && oldstate != value) {
+					OnStateChange.Invoke (this, oldstate, value);
+				}
 				this._state = value;
 			} 
 		}
-
-		public delegate void StateChangedEvent(QBusController sender, StateChangedEvent from, StateChangedEvent to);
-		public StateChangedEvent OnStateChange;
 
 
 		public QBusController (String Address, String Port, String UserName, String UserPassword)
@@ -59,7 +70,7 @@ namespace org.qasparov.qbis.server.qbus
 			this.Port = Int32.Parse(Port);
 			this.UserName = UserName;
 			this.UserPassword = UserPassword;
-			this.State = ControllerStates.DISCONNECTED;
+			this._state = ControllerStates.DISCONNECTED; //When using the setter, this would cause an exception bacause of the default value. 
 		}
 
 
@@ -129,9 +140,15 @@ namespace org.qasparov.qbis.server.qbus
 		void HandleCommandReceived (object sender, Qbus.Communication.CommandEventArgs e)
 		{
 			Logger.Log ("Command Received: " );	
-
 			Logger.WriteProperties (e.Command, "     ");
-			
+
+			if (OnCommandReceived != null) {
+				this.OnCommandReceived(this, new SDK.QBisMessage{
+					//TODO: construct a meaninfull Message
+					Desciption = e.Command.ToString()
+				});
+			}
+
 		}
 
 

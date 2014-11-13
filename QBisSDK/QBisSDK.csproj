@@ -41,6 +41,7 @@
     <Compile Include="QBisProtocolMessages.cs" />
     <Compile Include="QBisMessage.cs" />
     <Compile Include="QBisAction.cs" />
+    <Compile Include="QBisInstruction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

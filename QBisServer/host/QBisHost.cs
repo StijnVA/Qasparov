@@ -8,10 +8,14 @@ using org.qasparov.qbis.server.host;
 using System.Net;
 using org.qasparov.qbis.server.logging;
 using System.Collections.Concurrent;
-using SDK = org.qasparov.qbis.SDK;
 
 namespace org.qasparov.qbis.server.host
 {
+
+	/// <summary>
+	/// The QBisHost is responsible for hosting the services.
+	/// Those are: A (one at this time) QBusController and QBisClients (one for each Client connected).   
+	/// </summary>
 	public class QBisHost
 	{
 		QBusController controller;
@@ -20,7 +24,13 @@ namespace org.qasparov.qbis.server.host
 		public X509Certificate2 X509ServerCertificate { get; set; }
 		private TcpListener listener;
 
-		ConcurrentQueue<SDK.QBisMessage> messageQueue = new ConcurrentQueue<SDK.QBisMessage>();
+		private MessageDispatcher messageDispatcher = new MessageDispatcher();
+
+		public delegate void NewClientConnectedEvent (QBisHost sender, QBisClient client);
+		public NewClientConnectedEvent OnNewClientConnected;
+
+		public delegate void ClientDisconnectedEvent (QBisHost sender, QBisClient client);
+		public ClientDisconnectedEvent OnClientDisconnected;
 
 		public QBisHost ()
 		{
@@ -47,20 +57,33 @@ namespace org.qasparov.qbis.server.host
 			var listenThread = new Thread (() => ListenForIncommingConnection(this));
 			listenThread.Start ();
 		}
-	
-
 
 		private void ListenForIncommingConnection(QBisHost host){
 			Logger.Log ("ListenForIncommingConnection...");
 			var tcpClient = host.listener.AcceptTcpClient ();
 			ListenForIncommingConnectionOnNewThread ();
 			var qBisClient = new QBisClient (tcpClient, X509ServerCertificate);
-			qBisClient.OnMessageReceived += (SDK.QBisMessage message) => {
-				this.messageQueue.Enqueue(message);
-			};
-			qBisClient.StartProcessing ();
-		}
+			qBisClient.OnInstructionReceived += (QBisClient sender, SDK.QBisInstruction instruction) => {
+				Logger.Log(String.Format("Instruction from {0} received: {1}", sender.ToString(), instruction.Desciption));
 
+				//Only intended for test purposel
+				//TODO: Remove
+				if(instruction.Desciption == SDK.QBisProtocolMessages.BROADCAST_TEST){
+					messageDispatcher.Publish(new SDK.QBisMessage {
+						Desciption = "Broadcasting the broadcast request"
+					});
+				}  
+			};
+			if (OnNewClientConnected != null) {
+				OnNewClientConnected (this, qBisClient);
+			}
+			messageDispatcher.Register (qBisClient);
+			qBisClient.StartProcessing ();
+			messageDispatcher.Unregister (qBisClient);
+			if (OnClientDisconnected != null) {
+				OnClientDisconnected (this, qBisClient);
+			}
+		}
 
 		public void StartListening(String pathToX509Certificate, String certificatePassword  ,Int32 port) {
 			this.Port = port;
@@ -69,6 +92,9 @@ namespace org.qasparov.qbis.server.host
 
 		public void ConnectToQBus(String host, String port, String user, String pass){
 			controller = new QBusController (host, port, user, pass);
+			controller.OnStateChange += ((sender, from, to) => {
+				Logger.Log(String.Format("{0} is changing state from {1} to {2}",sender.ToString(), from.ToString(), to.ToString()));
+			});
 			controller.Connect ();
 		}
 

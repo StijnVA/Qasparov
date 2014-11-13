@@ -13,9 +13,19 @@ namespace org.qasparov.qbis.server.host
 		{
 		}
 
+		public void Register (QBisClient qBisClient)
+		{
+			this.clients.Add (qBisClient);
+		}
+
+		public void Unregister (QBisClient qBisClient)
+		{
+			this.clients.Remove (qBisClient);
+		}
 
 		public void Publish (org.qasparov.qbis.SDK.QBisMessage message)
 		{
+			//TODO: Evaluete if the client is allowed to receive the message 
 			clients.ForEach((client) => {
 				if(client!=null){
 					client.ProcessMessage(message);
