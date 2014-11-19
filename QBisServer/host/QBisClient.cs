@@ -46,7 +46,10 @@ namespace org.qasparov.qbis.server.host
 			{			
 				sslStream.AuthenticateAsServer(x509certificate, true, SslProtocols.Tls, true);
 				if(sslStream.RemoteCertificate!=null){
+					Logger.Log("A certificate was provided by the client.");
 					this.x509clientCertificate = new X509Certificate2(sslStream.RemoteCertificate);
+				}else{
+					Logger.Log("There was NO certificate provided by the client.");
 				}
 				var reader = new StreamReader(sslStream);
 				this.writer = new StreamWriter(sslStream);

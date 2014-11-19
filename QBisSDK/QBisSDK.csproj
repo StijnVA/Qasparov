@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{66DAE793-1357-40DC-B0B8-4998C8D32CF8}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>QBisSDK</RootNamespace>
+    <RootNamespace>org.qasparov.qbis.SDK</RootNamespace>
     <AssemblyName>QBisSDK</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -35,6 +35,9 @@
     <Reference Include="Qbus.Communication">
       <HintPath>..\libs\Qbus.Communication.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -42,6 +45,7 @@
     <Compile Include="QBisMessage.cs" />
     <Compile Include="QBisAction.cs" />
     <Compile Include="QBisInstruction.cs" />
+    <Compile Include="ApplicationConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

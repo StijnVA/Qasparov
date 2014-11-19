@@ -12,6 +12,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{0983CA8D-2
 		libs\Qbus.Communication.dll = libs\Qbus.Communication.dll
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ssl-cert", "ssl-cert", "{5A01FBFB-AF19-4A2B-AFBC-E4A8CA4A7172}"
+	ProjectSection(SolutionItems) = preProject
+		ssl-cert\cert\QBisClient.pfx = ssl-cert\cert\QBisClient.pfx
+		ssl-cert\cert\QBisServer.pfx = ssl-cert\cert\QBisServer.pfx
+		ssl-cert\README.TXT = ssl-cert\README.TXT
+		ssl-cert\cert\CA.crt = ssl-cert\cert\CA.crt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -34,6 +42,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = QBisServer\QBisServer.csproj
+		StartupItems = $0
+		$0.Item = QBisServer\QBisServer.csproj
+		$0.Item = QBisClient\QBisClient.csproj
 	EndGlobalSection
 EndGlobal

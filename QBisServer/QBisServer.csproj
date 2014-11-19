@@ -60,9 +60,13 @@
     <Folder Include="qbus\" />
     <Folder Include="host\" />
     <Folder Include="logging\" />
+    <Folder Include="cert\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="selfSigned.pfx">
+    <None Include="cert\selfSigned.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="cert\QBisServer.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

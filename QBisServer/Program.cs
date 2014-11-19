@@ -32,7 +32,9 @@ namespace org.qasparov.qbis.server
 				Console.WriteLine(String.Format ("New client {0} connected", client.FriendlyName));
 			};
 
-			host.StartListening ("selfSigned.pfx", "mypass");
+			host.StartListening ("./cert/QBisServer.pfx", "mypass");
+
+
 
 			Console.ReadLine ();
 
