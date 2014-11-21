@@ -28,7 +28,8 @@ namespace org.qasparov.qbis.server
 				//SDK.ApplicationConfiguration.Instance.qBisPort
 				8844) ;
 			var sslStream = new SslStream (tcpClient.GetStream (),
-				                               false, (sender, certificate, chain, sslPolicyErrors) => {
+				                               false, 
+				                               (sender, certificate, chain, sslPolicyErrors) => {
 	
 					if (sslPolicyErrors == SslPolicyErrors.None){
 						Console.WriteLine("Certificate OK");
@@ -40,17 +41,24 @@ namespace org.qasparov.qbis.server
 					// Do not allow this client to communicate with unauthenticated servers. 
 					return false;
 
+				},	
+												(sender, targetHost, localCertificates, remoteCertificate, acceptableIssuers) =>{
+					Console.WriteLine("Client is selecting a local certificate.");
+					Console.WriteLine("   for target host: " + targetHost);
+					Console.WriteLine(localCertificates[0].Subject);
+					return localCertificates[0];
 				});
+
 				Console.WriteLine("Before Authenticating");
 				try{
 					sslStream.AuthenticateAsClient (
-					"QBis Server",
-					new X509CertificateCollection (new []  { 
-						new X509Certificate2 (
-							SDK.ApplicationConfiguration.Instance.x509CertificatePath,
-							"mypass") } ),
-					System.Security.Authentication.SslProtocols.Tls,
-					false);
+						"QBis Server",
+						new X509CertificateCollection (new []  { 
+							new X509Certificate2 (
+								SDK.ApplicationConfiguration.Instance.x509CertificatePath,
+								"mypass") } ),
+						System.Security.Authentication.SslProtocols.Tls,
+						true);
 				}catch (Exception e)
 				{
 					Console.WriteLine("Exception: {0}", e.Message);
@@ -62,9 +70,11 @@ namespace org.qasparov.qbis.server
 					tcpClient.Close();
 					return;
 				}
+
 				Console.WriteLine("Authenticated");
 
 				Console.WriteLine(sslStream.RemoteCertificate.Subject);
+
 
 			//var writer = new StreamWriter (sslStream);		
 			byte[] messsage = Encoding.UTF8.GetBytes("Hello world");

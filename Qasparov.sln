@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ssl-cert", "ssl-cert", "{5A
 		ssl-cert\cert\QBisServer.pfx = ssl-cert\cert\QBisServer.pfx
 		ssl-cert\README.TXT = ssl-cert\README.TXT
 		ssl-cert\cert\CA.crt = ssl-cert\cert\CA.crt
+		ssl-cert\scripts\create-qbis-client-certificate.sh = ssl-cert\scripts\create-qbis-client-certificate.sh
 	EndProjectSection
 EndProject
 Global
