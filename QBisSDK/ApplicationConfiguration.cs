@@ -8,30 +8,27 @@ namespace org.qasparov.qbis.SDK
 	/// It can be set by providing a configuration with your application (example: myApp.exe.config)
 	/// but the values can also be provided from code
 	/// </summary>
-	public class ApplicationConfiguration
+	public abstract class ApplicationConfiguration<T> where T: ApplicationConfiguration<T> , new()
 	{
-		private static ApplicationConfiguration instance;
+
+		private static T instance;
 		private static Object thisLock = new Object();
 
-		public static ApplicationConfiguration Instance { get {
+		public static T Instance { get {
 				lock (thisLock) {
 					if(instance==null){
-						instance = new ApplicationConfiguration ();
+						instance = new T();
 					}
 					return instance;
 				}
-			} }
-
-		public String x509CertificatePath { get; set; }
-		public String qBisHostAddress{ get; set; }
-		public String qBisPort { get; set; }
-		public String qBisHostName { get; set;}
+			} 
+		}
+			
+		protected abstract void SetDefaultValues();
 
 		protected ApplicationConfiguration ()
 		{
-			//Default Values
-			this.qBisHostName = "localhost";
-			this.qBisPort = "8844";
+			SetDefaultValues ();
 
 			foreach (var propertInfo in this.GetType().GetProperties()) {
 				if (propertInfo.CanWrite) {

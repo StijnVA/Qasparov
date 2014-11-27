@@ -10,6 +10,7 @@ namespace org.qasparov.qbis.server
 	/// </summary>
 	class ServiseHost
 	{
+
 		public static void Main (string[] args)
 		{
 			var arguments = StartupArguments.Parse (args);

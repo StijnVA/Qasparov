@@ -18,6 +18,12 @@ namespace org.qasparov.qbis.server.host
 		private StreamWriter writer;
 		private X509Certificate2 x509clientCertificate;
 
+		public delegate void ClientConnectedEvent (QBisClient sender);
+		public ClientConnectedEvent OnClientConnected;
+
+		public delegate void InstructionReceivedDelegate(QBisClient sender, SDK.QBisInstruction instruction);
+		public InstructionReceivedDelegate OnInstructionReceived;
+
 		public QBisClient (TcpClient tcpclient, X509Certificate2 x509certificate)
 		{
 			this.tcpclient = tcpclient;
@@ -35,7 +41,11 @@ namespace org.qasparov.qbis.server.host
 				if (this.x509clientCertificate == null) {
 					return ANONYMOUS;
 				} else {
-					return this.x509clientCertificate.FriendlyName;
+					if (!String.IsNullOrWhiteSpace (this.x509clientCertificate.FriendlyName)) {
+						return this.x509clientCertificate.FriendlyName;
+					}else{
+						return this.x509clientCertificate.Subject;
+					}
 				}
 			}
 		}
@@ -50,6 +60,9 @@ namespace org.qasparov.qbis.server.host
 					this.x509clientCertificate = new X509Certificate2(sslStream.RemoteCertificate);
 				}else{
 					Logger.Log("There was NO certificate provided by the client.");
+				}
+				if(this.OnClientConnected!=null){
+					this.OnClientConnected(this);
 				}
 				var reader = new StreamReader(sslStream);
 				this.writer = new StreamWriter(sslStream);
@@ -81,13 +94,16 @@ namespace org.qasparov.qbis.server.host
 		{
 			if (writer != null) {
 				byte[] bytes = Encoding.UTF8.GetBytes(message.Desciption);
-				writer.WriteLine (message.Desciption);
+				writer.WriteLine (bytes);
 				writer.Flush ();
 			}
 		}
 
-		public delegate void InstructionReceivedDelegate(QBisClient sender, SDK.QBisInstruction instruction);
-		public InstructionReceivedDelegate OnInstructionReceived;
+		public override string ToString ()
+		{
+			return string.Format ("[QBisClient ({0})]", FriendlyName);
+		}
+	
 
 	}
 }

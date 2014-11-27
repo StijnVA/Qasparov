@@ -15,91 +15,69 @@ namespace org.qasparov.qbis.server
 	{
 		public static void Main (string[] args)
 		{
-			try{
+			try {
 
-				Console.ReadLine();
 
-			SDK.ApplicationConfiguration.Instance.x509CertificatePath = "QBisClient.pfx";
+				//We don't store te password in the config file, so we need to set it in code.
+				Console.WriteLine ("Password to unlock the key:");			
+				var pass = ReadPassword ();
+				SDK.QBisClientApplicationConfiguration.Instance.x509CertificatePass = pass;
 
-			var qBisClient = new SDK.QBisClient ();
-			qBisClient.Connect ();
-			qBisClient.OnMessageReceived += (sender, message) => {
-				Console.WriteLine(String.Format("Message received from {0}: {1}", sender.Host, message.Desciption));
-			};
+				var qBisClient = new SDK.QBisClient ();
+
+				qBisClient.Connect ();
+				qBisClient.OnMessageReceived += (sender, message) => {
+					Console.WriteLine (String.Format ("Message received from {0}: {1}", sender.Host, message.Desciption));
+				};
 			
-			qBisClient.StartReceiving();
+				qBisClient.StartReceiving ();
 
-			} catch(Exception ex){
-				Console.WriteLine ("Error: " + ex.Message);
-			}
-			//The follow code need to be in SDK.QBisClient
-			//Currently developed in an other branch
-
-			Console.ReadLine ();
-/*
-			var tcpClient = new TcpClient (
-				SDK.ApplicationConfiguration.Instance.qBisHostName,
-				//SDK.ApplicationConfiguration.Instance.qBisPort
-				8844) ;
-			var sslStream = new SslStream (tcpClient.GetStream (),
-				                               false, 
-				                               (sender, certificate, chain, sslPolicyErrors) => {
-	
-					if (sslPolicyErrors == SslPolicyErrors.None){
-						Console.WriteLine("Certificate OK");
-						return true;
-					}
-
-					Console.WriteLine("Certificate error: {0}", sslPolicyErrors);
-
-					// Do not allow this client to communicate with unauthenticated servers. 
-					return false;
-
-				},	
-												(sender, targetHost, localCertificates, remoteCertificate, acceptableIssuers) =>{
-					Console.WriteLine("Client is selecting a local certificate.");
-					Console.WriteLine("   for target host: " + targetHost);
-					Console.WriteLine(localCertificates[0].Subject);
-					return localCertificates[0];
-				});
-
-				Console.WriteLine("Before Authenticating");
-				try{
-					sslStream.AuthenticateAsClient (
-						"QBis Server",
-						new X509CertificateCollection (new []  { 
-							new X509Certificate2 (
-								SDK.ApplicationConfiguration.Instance.x509CertificatePath,
-								"mypass") } ),
-						System.Security.Authentication.SslProtocols.Tls,
-						true);
-				}catch (Exception e)
-				{
-					Console.WriteLine("Exception: {0}", e.Message);
-					if (e.InnerException != null)
-					{
-						Console.WriteLine("Inner exception: {0}", e.InnerException.Message);
-					}
-					Console.WriteLine ("Authentication failed - closing the connection.");
-					tcpClient.Close();
-					return;
+				var line = Console.ReadLine ();
+				while (line != "exit") {
+					qBisClient.SendInstruction (new SDK.QBisInstruction { Desciption = line });
+					line = Console.ReadLine ();
 				}
 
-				Console.WriteLine("Authenticated");
-
-				Console.WriteLine(sslStream.RemoteCertificate.Subject);
-
-
-			//var writer = new StreamWriter (sslStream);		
-			byte[] messsage = Encoding.UTF8.GetBytes("Hello world");
-			sslStream.Write(messsage);
-			sslStream.Flush();
-
-			}catch(Exception ex){
-				Console.WriteLine (ex.Message);
+			} catch (Exception ex) {
+				Console.WriteLine ("Error: " + ex.Message);
 			}
-*/
 
+
+		}
+
+		/// <summary>
+		/// Reads the password.
+		/// </summary>
+		/// <returns>The password.</returns>
+		/// (c) by Parth Shah
+		/// http://www.c-sharpcorner.com/forums/thread/32102/password-in-C-Sharp-console-application.aspx
+		public static string ReadPassword ()
+		{
+			string password = "";
+			ConsoleKeyInfo info = Console.ReadKey (true);
+			while (info.Key != ConsoleKey.Enter) {
+				if (info.Key != ConsoleKey.Backspace) {
+					Console.Write ("*");
+					password += info.KeyChar;
+				} else if (info.Key == ConsoleKey.Backspace) {
+					if (!string.IsNullOrEmpty (password)) {
+						// remove one character from the list of password characters
+						password = password.Substring (0, password.Length - 1);
+						// get the location of the cursor
+						int pos = Console.CursorLeft;
+						// move the cursor to the left by one character
+						Console.SetCursorPosition (pos - 1, Console.CursorTop);
+						// replace it with space
+						Console.Write (" ");
+						// move the cursor to the left by one character again
+						Console.SetCursorPosition (pos - 1, Console.CursorTop);
+					}
+				}
+				info = Console.ReadKey (true);
+			}
+			// add a new line because user pressed enter at the end of their password
+			Console.WriteLine ();
+			return password;
 		}
 	}
 }

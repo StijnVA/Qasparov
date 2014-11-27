@@ -47,6 +47,7 @@
     <Compile Include="QBisInstruction.cs" />
     <Compile Include="ApplicationConfiguration.cs" />
     <Compile Include="QBisClient.cs" />
+    <Compile Include="QBisClientApplicationConfiguration.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
