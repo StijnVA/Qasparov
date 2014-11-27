@@ -37,7 +37,6 @@
     <Reference Include="Qbus.Communication">
       <HintPath>..\libs\Qbus.Communication.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Security" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

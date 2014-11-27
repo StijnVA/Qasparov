@@ -1,6 +1,6 @@
 ﻿<Properties GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="QBisClient/Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="QBisSDK\QBisClient.cs">
     <Files>
       <File FileName="QBisSDK/QBisProtocolMessages.cs" Line="12" Column="1" />
       <File FileName="QBisServer/Program.cs" Line="37" Column="4" />
