@@ -14,11 +14,37 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{0983CA8D-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ssl-cert", "ssl-cert", "{5A01FBFB-AF19-4A2B-AFBC-E4A8CA4A7172}"
 	ProjectSection(SolutionItems) = preProject
-		ssl-cert\cert\QBisClient.pfx = ssl-cert\cert\QBisClient.pfx
-		ssl-cert\cert\QBisServer.pfx = ssl-cert\cert\QBisServer.pfx
 		ssl-cert\README.TXT = ssl-cert\README.TXT
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cert", "cert", "{91B9984B-2221-4163-9ACD-3DE284687013}"
+	ProjectSection(SolutionItems) = preProject
 		ssl-cert\cert\CA.crt = ssl-cert\cert\CA.crt
+		ssl-cert\cert\CA.key = ssl-cert\cert\CA.key
+		ssl-cert\cert\QBisClient.crt = ssl-cert\cert\QBisClient.crt
+		ssl-cert\cert\QBisClient.csr = ssl-cert\cert\QBisClient.csr
+		ssl-cert\cert\QBisClient.key = ssl-cert\cert\QBisClient.key
+		ssl-cert\cert\QBisClient.pfx = ssl-cert\cert\QBisClient.pfx
+		ssl-cert\cert\QBisServer.crt = ssl-cert\cert\QBisServer.crt
+		ssl-cert\cert\QBisServer.csr = ssl-cert\cert\QBisServer.csr
+		ssl-cert\cert\QBisServer.key = ssl-cert\cert\QBisServer.key
+		ssl-cert\cert\QBisServer.pfx = ssl-cert\cert\QBisServer.pfx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{C6B439AF-C44B-448E-B944-46DFA71665B9}"
+	ProjectSection(SolutionItems) = preProject
 		ssl-cert\scripts\create-qbis-client-certificate.sh = ssl-cert\scripts\create-qbis-client-certificate.sh
+		ssl-cert\scripts\create-qbis-server-certificate.sh = ssl-cert\scripts\create-qbis-server-certificate.sh
+		ssl-cert\scripts\setup-ca.sh = ssl-cert\scripts\setup-ca.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{0E0F02A1-9D30-4608-A162-B4DBB961D86B}"
+	ProjectSection(SolutionItems) = preProject
+		ssl-cert\scripts\config\index.txt = ssl-cert\scripts\config\index.txt
+		ssl-cert\scripts\config\openssl-ca.cnf = ssl-cert\scripts\config\openssl-ca.cnf
+		ssl-cert\scripts\config\openssl-client.cnf = ssl-cert\scripts\config\openssl-client.cnf
+		ssl-cert\scripts\config\openssl-server.cnf = ssl-cert\scripts\config\openssl-server.cnf
+		ssl-cert\scripts\config\serial.txt = ssl-cert\scripts\config\serial.txt
 	EndProjectSection
 EndProject
 Global
@@ -41,6 +67,9 @@ Global
 		{D1AB7B1A-5BC6-40B5-B802-76C672C0114A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{91B9984B-2221-4163-9ACD-3DE284687013} = {5A01FBFB-AF19-4A2B-AFBC-E4A8CA4A7172}
+		{C6B439AF-C44B-448E-B944-46DFA71665B9} = {5A01FBFB-AF19-4A2B-AFBC-E4A8CA4A7172}
+		{0E0F02A1-9D30-4608-A162-B4DBB961D86B} = {C6B439AF-C44B-448E-B944-46DFA71665B9}
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItems = $0

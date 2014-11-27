@@ -16,13 +16,27 @@ namespace org.qasparov.qbis.server
 		public static void Main (string[] args)
 		{
 			try{
+
+				Console.ReadLine();
+
 			SDK.ApplicationConfiguration.Instance.x509CertificatePath = "QBisClient.pfx";
 
+			var qBisClient = new SDK.QBisClient ();
+			qBisClient.Connect ();
+			qBisClient.OnMessageReceived += (sender, message) => {
+				Console.WriteLine(String.Format("Message received from {0}: {1}", sender.Host, message.Desciption));
+			};
+			
+			qBisClient.StartReceiving();
+
+			} catch(Exception ex){
+				Console.WriteLine ("Error: " + ex.Message);
+			}
 			//The follow code need to be in SDK.QBisClient
 			//Currently developed in an other branch
 
 			Console.ReadLine ();
-
+/*
 			var tcpClient = new TcpClient (
 				SDK.ApplicationConfiguration.Instance.qBisHostName,
 				//SDK.ApplicationConfiguration.Instance.qBisPort
@@ -84,7 +98,7 @@ namespace org.qasparov.qbis.server
 			}catch(Exception ex){
 				Console.WriteLine (ex.Message);
 			}
-
+*/
 
 		}
 	}
