@@ -23,8 +23,9 @@ namespace org.qasparov.qbis.SDK
 			} }
 
 		public String x509CertificatePath { get; set; }
-		public String qBisHostName { get; set; }
+		public String qBisHostAddress{ get; set; }
 		public String qBisPort { get; set; }
+		public String qBisHostName { get; set;}
 
 		protected ApplicationConfiguration ()
 		{
